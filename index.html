@@ -540,16 +540,30 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:56px 4
     position:relative;
   }
 
-  .fest-row{
-    gap:14px;
-    overflow-x:auto;
-    padding:4px 4px 14px;
-    scroll-snap-type:x mandatory;
-  }
+.fest-row{
+  display:flex;
+  gap: 12px;
+  overflow:visible;
+  padding:4px 0 12px;
+  scroll-snap-type: x mandatory;
+}
 
-  .fest-card{
-    min-width:82%;
-  }
+.fest-card{
+  min-width:88%;
+  width:88%;
+}
+.fest-img-w{
+  height:190px;
+}
+
+.fest-body{
+  padding:16px;
+}
+
+.fest-title{
+  font-size:18px;
+  line-height:1.35;
+}
 
   .fest-btn{
     display:none;
