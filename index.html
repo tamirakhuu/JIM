@@ -276,6 +276,10 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:56px 4
 .pp.open{
   transform: translateX(0);
 }
+#btt{
+  opacity: 0;
+  pointer-events: none;
+}
 
 @media (max-width: 768px){
   .pp{
@@ -982,10 +986,56 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:56px 4
   <button class="btn-logout" onclick="handleLogout()">Гарах</button>
 </div>
 
-<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button id="btt" type="button">↑</button>
 <div class="toast" id="toast"></div>
 
 <script>
+  const btt = document.getElementById('btt');
+const provincePage = document.getElementById('provincePage');
+
+function scrollToTop(){
+  if (provincePage && provincePage.classList.contains('active')) {
+    provincePage.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+}
+
+if (btt) {
+  btt.addEventListener('click', function (e) {
+    e.preventDefault();
+    scrollToTop();
+  });
+}
+
+function toggleBackToTop(){
+  let currentTop = window.scrollY;
+
+  if (provincePage && provincePage.classList.contains('active')) {
+    currentTop = provincePage.scrollTop;
+  }
+
+  if (currentTop > 220) {
+    btt.style.opacity = '1';
+    btt.style.pointerEvents = 'auto';
+  } else {
+    btt.style.opacity = '0';
+    btt.style.pointerEvents = 'none';
+  }
+}
+
+window.addEventListener('scroll', toggleBackToTop);
+if (provincePage) {
+  provincePage.addEventListener('scroll', toggleBackToTop);
+}
+
+toggleBackToTop();
 document.getElementById('ppOv').addEventListener('click', closePP);
 
 document.addEventListener('keydown', function(e){
@@ -1172,10 +1222,6 @@ function goHome(){
   pg.scrollTop = 0;
 }
 
-function scrollToId(id){
-  const el = document.getElementById(id);
-  if(el) el.scrollIntoView({behavior:'smooth'});
-}
 
 // ─── RESORT DETAIL ─────────────────────
 function openRD(pk, idx){
