@@ -990,8 +990,54 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:56px 4
 <div class="toast" id="toast"></div>
 
 <script>
-  const btt = document.getElementById('btt');
+const btt = document.getElementById('btt');
 const provincePage = document.getElementById('provincePage');
+const LS_USERS = 'jim_users';
+const LS_CURRENT = 'jim_current_user';
+
+function getUsers(){
+  return JSON.parse(localStorage.getItem(LS_USERS) || '[]');
+}
+function saveUsers(users){
+  localStorage.setItem(LS_USERS, JSON.stringify(users));
+}
+
+function register(name, email, password){
+  const users = getUsers();
+
+  const exists = users.find(u => u.email === email);
+  if(exists){
+    alert('Энэ имэйл бүртгэлтэй байна!');
+    return;
+  }
+
+  users.push({ name, email, password });
+  saveUsers(users);
+
+  alert('Амжилттай бүртгэгдлээ!');
+}
+
+function login(email, password){
+  const users = getUsers();
+  const found = users.find(u => u.email === email && u.password === password);
+
+  if(!found){
+    alert('Имэйл эсвэл нууц үг буруу байна!');
+    return;
+  }
+
+  localStorage.setItem(LS_CURRENT, JSON.stringify(found));
+  user = found;
+
+  closeModal('authModal');
+}
+
+function logout(){
+  localStorage.removeItem(LS_CURRENT);
+  user = null;
+  bookings = [];
+  location.reload();
+}
 
 function scrollToTop(){
   if (provincePage && provincePage.classList.contains('active')) {
@@ -1155,8 +1201,10 @@ const savedDB = localStorage.getItem('jim_db');
 const DB = savedDB ? sanitizeDB(JSON.parse(savedDB)) : defaultDB;
 
 // ─── STATE ───────────────────────────
-let user = JSON.parse(localStorage.getItem('jim_user') || 'null');
-let bookings = JSON.parse(localStorage.getItem('jim_bookings') || '[]');
+let user = JSON.parse(localStorage.getItem(LS_CURRENT) || 'null');
+let bookings = user
+  ? JSON.parse(localStorage.getItem('jim_bookings_' + user.email) || '[]')
+  : [];
 let bkCamp = '', bkPrice = 0;
 
 // ─── PAGE NAV ─────────────────────────
@@ -1305,33 +1353,35 @@ function switchTab(t){
 }
 
 function handleLogin(){
-  user = {
-    name: 'Аялагч',
-    email: document.getElementById('liEmail').value || 'user@jim.mn'
-  };
-  localStorage.setItem('jim_user', JSON.stringify(user));
-  closeModal('authModal');
-  updateNav();
-  showToast('Амжилттай нэвтэрлээ! ');
+  const email = document.getElementById('liEmail').value.trim();
+  const password = document.querySelector('#loginForm input[type="password"]').value.trim();
+
+  login(email, password);
+
+  if(user){
+    bookings = JSON.parse(localStorage.getItem('jim_bookings_' + user.email) || '[]');
+    updateNav();
+    showToast('Амжилттай нэвтэрлээ!');
+  }
 }
 
 function handleRegister(){
-  user = {
-    name: document.getElementById('regName').value || 'Хэрэглэгч',
-    email: document.getElementById('regEmail').value || 'user@jim.mn'
-  };
-  localStorage.setItem('jim_user', JSON.stringify(user));
-  closeModal('authModal');
-  updateNav();
-  showToast('Бүртгэл амжилттай! 🎉');
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const passwords = document.querySelectorAll('#registerForm input[type="password"]');
+  const password = passwords[0].value.trim();
+  const repeatPassword = passwords[1].value.trim();
+
+  if(password !== repeatPassword){
+    alert('Нууц үг таарахгүй байна!');
+    return;
+  }
+
+  register(name, email, password);
 }
 
 function handleLogout(){
-  user = null;
-  localStorage.removeItem('jim_user');
-  closePP();
-  updateNav();
-  showToast('Гарлаа. Дараа уулзъя! 👋');
+  logout();
 }
 
 function updateNav(){
@@ -1409,48 +1459,11 @@ function cancelBooking(index){
 
   bookings.splice(index, 1);
 
-  localStorage.setItem('jim_bookings', JSON.stringify(bookings));
-
-  renderBks();
-}
-
-function confirmBk(){
-  const ci = document.getElementById('bkIn').value;
-  const co = document.getElementById('bkOut').value;
-  const paxText = document.getElementById('bkPax').value;
-
-  let totalDays = 1;
-
-  if(ci && co){
-    const checkIn = new Date(ci);
-    const checkOut = new Date(co);
-
-    const diffTime = checkOut - checkIn;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if(diffDays > 0){
-      totalDays = diffDays;
-    }
+  if(user){
+    localStorage.setItem('jim_bookings_' + user.email, JSON.stringify(bookings));
   }
 
-  let paxCount = 1;
-  if(paxText.includes('2')) paxCount = 2;
-  else if(paxText.includes('3')) paxCount = 4;
-  else if(paxText.includes('4') || paxText.includes('6')) paxCount = 5;
-
-  const totalPrice = bkPrice * totalDays * paxCount;
-
-  bookings.push({
-    camp: bkCamp,
-    date: ci || 'Тодорхойгүй',
-    days: totalDays,
-    pax: paxText,
-    total: totalPrice
-  });
-  localStorage.setItem('jim_bookings', JSON.stringify(bookings));
-
-  closeModal('bookingModal');
-  showToast(`"${bkCamp}" захиалга амжилттай! 🎉`);
+  renderBks();
 }
 
 
