@@ -229,9 +229,9 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:56px 4
 .bk-btns{display:flex;gap:10px;margin-top:4px;}
 
 /* Resort detail */
-.rd-box{max-width:600px;padding:0;overflow:hidden;}
+.rd-box{max-width:600px;width: 100%; padding:0; overflow:hidden; max-height: 90vh;display: flex; flex-direction: column; }
 .rd-img{width:100%;height:220px;object-fit:cover;display:block;}
-.rd-body{padding:32px 36px 36px;}
+.rd-body{padding:32px 36px 36px;overflow-y: auto;-webkit-overflow-scrolling: touch; }
 .rd-title{font-family:'Comfortaa',serif;font-size:26px;font-weight:700;margin-bottom:6px;}
 .rd-loc{font-size:13px;color:var(--muted);margin-bottom:18px;}
 .rd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
@@ -589,11 +589,24 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:56px 4
   }
 
   .rd-body{
-    padding:22px 18px 24px;
+    padding:18px 16px 20px;
+  }
+  .rd-title{
+    font-size: 22px;
   }
 
   .rd-grid{
     grid-template-columns:1fr;
+    gap: 8px;
+  }
+
+  #rdModal .m-close{
+    top: 10px !important;
+    right: 10px !important;
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 22px !important;
+    z-index: 30 !important;
   }
 
   .pp{
@@ -927,7 +940,7 @@ const defaultDB = {
       {name:'Khatgal Camp',region:'Хатгал сум',img:'img/hatgalcamp.png',rating:'⭐ 4.8',price:'₮85,000',priceNum:85000,unit:'хүн/хоног',phone:'93315699',email:'khatgalcamp@gmail.com',feats:['🛖 Монгол гэр','🐴 Морин аялал','🚣 Завь','🔥 Гал тогоо','🌲 Ой орчин'],desc:'Хөвсгөл нуурын эрэгт шууд байрлах энэ кэмп нь байгаль дунд аялах хамгийн шилдэг газруудын нэг. Тохилог монгол гэр, мэргэжлийн хөтөч, гурилсан хоол бүхий гал тогоо.'},
       {name:"The Wanderer's Rest",region:'Хатгал сум',img:'img/wanderer.png',rating:'⭐ 4.7',price:'₮95,000',priceNum:95000,unit:'хүн/хоног',phone:'89472615',email:'wanderersrest@gmail.com',feats:['🛁 Саун','🍽 Ресторан','📶 WiFi','🌅 Нуурын харагдахуун','🛏 Байшин байр'],desc:'Орчин үеийн тав тухтай амралт. Нуурын гайхалтай харагдахуунтай, хувийн саун, дотор болон гэрийн хос тохилог байртай.'},
       {name:'Ертөнцийн Хязгаар',region:'Хатгал сум',img:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',rating:'⭐ 4.6',price:'₮70,000',priceNum:70000,unit:'хүн/хоног',phone:'86659637',email:'tourcamp@gmail.com',feats:['🏕 Кэмп','🔥 Гал тогоо','🌲 Ойн орчин','🎣 Загасчлах'],desc:'Ойн дотор байрлах тайван жуулчны бааз. Хөтөчтэй загасчлах, ойн алхалт, гал тогооны хоол.'},
-      {name:'Эх Жанхай',region:'Хатгал сум',img:'https://images.unsplash.com/photo-1601918774946-25832a4be0d6?w=800',rating:'⭐ 4.5',price:'₮75,000',priceNum:75000,unit:'хүн/хоног',phone:'99671892',email:'janhai@gmail.com',feats:['🛖 Гэр','🐴 Морин аялал','🏀 Сагсны талбай','🛁 Саун','💬 WhatsApp'],desc:'Хатгал сумын зүрхэнд байрлах Эх Жанхай нь морин аялал, саун, спорт талбайтай бүрэн иж бүрэн амралтын цогцолбор.'}
+      {name:'Эх Жанхай',region:'Хатгал сум',img:'https://images.unsplash.com/photo-1601918774946-25832a4be0d6?w=800',rating:'⭐ 4.5',price:'₮75,000',priceNum:75000,unit:'хүн/хоног',phone:'99671892',email:'janhai@gmail.com',feats:['🛖 Гэр','🐴 Морин аялал','🏀 Сагсны талбай','🛁 Саун'],desc:'Хатгал сумын зүрхэнд байрлах Эх Жанхай нь морин аялал, саун, спорт талбайтай бүрэн иж бүрэн амралтын цогцолбор.'}
     ]
   },
   omnugobi:{
