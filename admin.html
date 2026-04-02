@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ЖИМ Admin Panel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --gold:#C9A84C;
+      --gold-light:#E8C97A;
+      --dark:#0D0D0D;
+      --dark2:#131313;
+      --dark3:#1A1A1A;
+      --card:#1E1E1E;
+      --border:rgba(201,168,76,0.18);
+      --text:#F0EDE8;
+      --muted:rgba(240,237,232,0.55);
+      --danger:#e06060;
+      --radius:16px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:'Comfortaa',sans-serif;
+      background:var(--dark);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      background:var(--dark2);
+      border-right:1px solid var(--border);
+      padding:28px 20px;
+      position:sticky;
+      top:0;
+      height:100vh;
+    }
+
+    .brand{
+      font-size:28px;
+      font-weight:700;
+      color:var(--gold);
+      letter-spacing:3px;
+      margin-bottom:10px;
+    }
+
+    .brand-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:28px;
+    }
+
+    .side-card{
+      background:var(--dark3);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .side-card h3{
+      font-size:13px;
+      color:var(--gold);
+      margin-bottom:12px;
+    }
+
+    .side-card p{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .main{
+      padding:30px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:24px;
+      flex-wrap:wrap;
+    }
+
+    .title-wrap h1{
+      font-size:30px;
+      margin-bottom:8px;
+    }
+
+    .title-wrap p{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:12px;
+      padding:12px 18px;
+      font-family:'Comfortaa',sans-serif;
+      font-size:13px;
+      transition:.2s;
+    }
+
+    .btn-gold{
+      background:var(--gold);
+      color:var(--dark);
+      font-weight:700;
+    }
+
+    .btn-gold:hover{background:var(--gold-light);}
+    .btn-ghost{
+      background:transparent;
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+
+    .btn-ghost:hover{
+      border-color:var(--gold);
+      color:var(--gold);
+    }
+
+    .btn-danger{
+      background:transparent;
+      color:var(--danger);
+      border:1px solid rgba(224,96,96,.3);
+    }
+
+    .btn-danger:hover{
+      background:rgba(224,96,96,.08);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:22px;
+    }
+
+    .card h2{
+      font-size:18px;
+      margin-bottom:18px;
+      color:var(--gold);
+    }
+
+    .field{
+      margin-bottom:14px;
+    }
+
+    .field label{
+      display:block;
+      font-size:12px;
+      color:var(--gold);
+      margin-bottom:8px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      background:var(--dark);
+      border:1px solid var(--border);
+      color:var(--text);
+      border-radius:12px;
+      padding:12px 14px;
+      font-family:'Comfortaa',sans-serif;
+      font-size:13px;
+      outline:none;
+    }
+
+    .field textarea{
+      resize:vertical;
+      min-height:100px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:var(--gold);
+    }
+
+    .preview{
+      margin-top:12px;
+      width:100%;
+      height:180px;
+      border-radius:12px;
+      object-fit:cover;
+      display:none;
+      border:1px solid var(--border);
+      background:var(--dark);
+    }
+
+    .section-title{
+      font-size:22px;
+      margin:28px 0 16px;
+    }
+
+    .list-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+    }
+
+    .list-box{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:22px;
+    }
+
+    .list-box h3{
+      color:var(--gold);
+      margin-bottom:14px;
+      font-size:18px;
+    }
+
+    .item{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      margin-bottom:12px;
+      background:var(--dark3);
+    }
+
+    .item:last-child{margin-bottom:0;}
+
+    .item-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:10px;
+    }
+
+    .item-top strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .item-top small{
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.5;
+    }
+
+    .mini-img{
+      width:76px;
+      height:60px;
+      object-fit:cover;
+      border-radius:10px;
+      border:1px solid var(--border);
+      flex-shrink:0;
+      background:var(--dark);
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin:8px 0 10px;
+    }
+
+    .chip{
+      font-size:10px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:rgba(201,168,76,.12);
+      border:1px solid rgba(201,168,76,.22);
+      color:var(--gold);
+    }
+
+    .item-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      margin-top:8px;
+    }
+
+    .item-btn{
+      padding:8px 10px;
+      font-size:11px;
+      border-radius:10px;
+      cursor:pointer;
+      font-family:'Comfortaa',sans-serif;
+      border:none;
+    }
+
+    .item-delete{
+      background:transparent;
+      color:var(--danger);
+      border:1px solid rgba(224,96,96,.3);
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:26px;
+      transform:translateX(-50%) translateY(20px);
+      background:var(--dark3);
+      color:var(--gold);
+      border:1px solid var(--gold);
+      padding:12px 18px;
+      border-radius:12px;
+      font-size:13px;
+      opacity:0;
+      transition:.25s;
+      z-index:9999;
+      pointer-events:none;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media(max-width:1100px){
+      .grid,.list-grid{grid-template-columns:1fr;}
+    }
+
+    @media(max-width:860px){
+      .layout{grid-template-columns:1fr;}
+      .sidebar{
+        position:relative;
+        height:auto;
+        border-right:none;
+        border-bottom:1px solid var(--border);
+      }
+      .main{padding:18px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">ЖИМ</div>
+      <div class="brand-sub">Admin Panel</div>
+
+      <div class="side-card">
+        <h3>Тайлбар</h3>
+        <p>
+          Эндээс аймаг сонгож үзэсгэлэнт газар, амралтын газар, resort-ын мэдээлэл нэмнэ.
+          Хадгалсан өгөгдөл browser-ийн localStorage-д үлдэнэ.
+        </p>
+      </div>
+
+      <div class="side-card">
+        <h3>Чухал</h3>
+        <p>
+          Зураг upload биш, одоогоор зургийн зам эсвэл URL оруулна.
+          Жишээ: <br><br>
+          <strong>img/khatgal.jpg</strong>
+        </p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="title-wrap">
+          <h1>Контент удирдах</h1>
+          <p>Аймаг сонгоод мэдээллээ нэм, устга, шинэчил.</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-ghost" onclick="location.href='jim.html'">Нүүр сайт руу очих</button>
+          <button class="btn btn-danger" onclick="resetDB()">Бүх өгөгдөл reset</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:24px;">
+        <h2>Аймаг сонгох</h2>
+        <div class="field">
+          <label>Аймаг</label>
+          <select id="provinceSelect" onchange="renderAllLists()">
+            <option value="howsgol">Хөвсгөл аймаг</option>
+            <option value="omnugobi">Өмнөговь аймаг</option>
+            <option value="arkhangai">Архангай аймаг</option>
+            <option value="govialtai">Говь-Алтай аймаг</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Үзэсгэлэнт газар нэмэх</h2>
+
+          <div class="field">
+            <label>Нэр</label>
+            <input id="spotName" type="text" placeholder="Хөвсгөл нуур">
+          </div>
+
+          <div class="field">
+            <label>Зургийн зам / URL</label>
+            <input id="spotImg" type="text" placeholder="img/howsgol.jpg" oninput="previewImage('spotImg','spotPreview')">
+          </div>
+
+          <img id="spotPreview" class="preview" alt="preview">
+
+          <div class="field">
+            <label>Тайлбар</label>
+            <textarea id="spotDesc" placeholder="Газрын тайлбар..."></textarea>
+          </div>
+
+          <div class="field">
+            <label>Тагууд (таслалаар)</label>
+            <input id="spotTags" type="text" placeholder="🚣 Завь, 📸 Зурагчлал, 🐴 Морин аялал">
+          </div>
+
+          <button class="btn btn-gold" onclick="addSpot()">Үзэсгэлэнт газар нэмэх</button>
+        </div>
+
+        <div class="card">
+          <h2>Амралтын газар / Resort нэмэх</h2>
+
+          <div class="field">
+            <label>Нэр</label>
+            <input id="resortName" type="text" placeholder="Khatgal Camp">
+          </div>
+
+          <div class="field">
+            <label>Байршил</label>
+            <input id="resortRegion" type="text" placeholder="Хатгал сум">
+          </div>
+
+          <div class="field">
+            <label>Зургийн зам / URL</label>
+            <input id="resortImg" type="text" placeholder="img/khatgal.jpg" oninput="previewImage('resortImg','resortPreview')">
+          </div>
+
+          <img id="resortPreview" class="preview" alt="preview">
+
+          <div class="field">
+            <label>Үнэлгээ</label>
+            <input id="resortRating" type="text" placeholder="⭐ 4.8">
+          </div>
+
+          <div class="field">
+            <label>Үнэ</label>
+            <input id="resortPrice" type="text" placeholder="₮85,000">
+          </div>
+
+          <div class="field">
+            <label>Үнэ тоон утга</label>
+            <input id="resortPriceNum" type="number" placeholder="85000">
+          </div>
+
+          <div class="field">
+            <label>Утас</label>
+            <input id="resortPhone" type="text" placeholder="99112233">
+          </div>
+
+          <div class="field">
+            <label>Имэйл</label>
+            <input id="resortEmail" type="email" placeholder="example@gmail.com">
+          </div>
+
+          <div class="field">
+            <label>Feature-үүд (таслалаар)</label>
+            <input id="resortFeats" type="text" placeholder="🛖 Монгол гэр, 🐴 Морин аялал, 🚣 Завь">
+          </div>
+
+          <div class="field">
+            <label>Тайлбар</label>
+            <textarea id="resortDesc" placeholder="Амралтын газрын тайлбар..."></textarea>
+          </div>
+
+          <button class="btn btn-gold" onclick="addResort()">Амралтын газар нэмэх</button>
+        </div>
+      </div>
+
+      <h2 class="section-title">Одоогийн мэдээлэл</h2>
+
+      <div class="list-grid">
+        <div class="list-box">
+          <h3>Үзэсгэлэнт газрууд</h3>
+          <div id="spotList" class="muted">Одоогоор мэдээлэл алга.</div>
+        </div>
+
+        <div class="list-box">
+          <h3>Амралтын газрууд / Resorts</h3>
+          <div id="resortList" class="muted">Одоогоор мэдээлэл алга.</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const defaultDB = {
+      howsgol:{
+        label:'Хөвсгөл аймаг',
+        region:'Хойд бүс',
+        heroImg:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400',
+        sub:'Монголын Швейцар гэгддэг Хөвсгөл нь тунгалаг нуур, ногоон уулс, мөсний баяраараа алдартай.',
+        mapSrc:'https://www.google.com/maps?q=50.4,100.4&z=8&output=embed',
+        spots:[
+          {
+            name:'Хөвсгөл нуур',
+            img:'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800',
+            desc:'Монгол орны хамгийн том цэнгэг нуур.',
+            tags:['🚣 Завь','🐟 Загасчлах','📸 Зурагчлал']
+          }
+        ],
+        resorts:[
+          {
+            name:'Khatgal Camp',
+            region:'Хатгал сум',
+            img:'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800',
+            rating:'⭐ 4.8',
+            price:'₮85,000',
+            priceNum:85000,
+            unit:'хүн/хоног',
+            phone:'93315699',
+            email:'khatgalcamp@gmail.com',
+            feats:['🛖 Монгол гэр','🐴 Морин аялал','🚣 Завь'],
+            desc:'Хөвсгөл нуурын эрэгт байрлах кэмп.'
+          }
+        ]
+      },
+
+      omnugobi:{
+        label:'Өмнөговь аймаг',
+        region:'Өмнөд бүс',
+        heroImg:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1400',
+        sub:'Говийн гайхамшгуудыг агуулсан нутаг.',
+        mapSrc:'https://www.google.com/maps?q=43.5,104.0&z=8&output=embed',
+        spots:[],
+        resorts:[]
+      },
+
+      arkhangai:{
+        label:'Архангай аймаг',
+        region:'Төвийн бүс',
+        heroImg:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400',
+        sub:'Хангайн нуруу, нуур, галт уултай үзэсгэлэнт нутаг.',
+        mapSrc:'https://www.google.com/maps?q=47.9,100.7&z=8&output=embed',
+        spots:[],
+        resorts:[]
+      },
+
+      govialtai:{
+        label:'Говь-Алтай аймаг',
+        region:'Баруун бүс',
+        heroImg:'img/govialtai.png',
+        sub:'Алтайн нуруу, говь талын огтлолцол.',
+        mapSrc:'https://www.google.com/maps?q=45.5,96.0&z=8&output=embed',
+        spots:[],
+        resorts:[]
+      }
+    };
+
+    let travelDB = loadDB();
+
+    function loadDB(){
+      const saved = localStorage.getItem('jim_db');
+      return saved ? JSON.parse(saved) : structuredClone(defaultDB);
+    }
+
+    function saveDB(){
+      localStorage.setItem('jim_db', JSON.stringify(travelDB));
+    }
+
+    function getProvinceKey(){
+      return document.getElementById('provinceSelect').value;
+    }
+
+    function showToast(message){
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function previewImage(inputId, previewId){
+      const value = document.getElementById(inputId).value.trim();
+      const img = document.getElementById(previewId);
+
+      if(!value){
+        img.style.display = 'none';
+        img.src = '';
+        return;
+      }
+
+      img.src = value;
+      img.style.display = 'block';
+
+      img.onerror = () => {
+        img.style.display = 'none';
+      };
+    }
+
+    function addSpot(){
+      const province = getProvinceKey();
+      const name = document.getElementById('spotName').value.trim();
+      const img = document.getElementById('spotImg').value.trim();
+      const desc = document.getElementById('spotDesc').value.trim();
+      const tags = document.getElementById('spotTags').value
+        .split(',')
+        .map(t => t.trim())
+        .filter(Boolean);
+
+      if(!name || !img || !desc){
+        showToast('Үзэсгэлэнт газрын мэдээллээ бүрэн оруулна уу');
+        return;
+      }
+
+      travelDB[province].spots.push({ name, img, desc, tags });
+      saveDB();
+      clearSpotForm();
+      renderAllLists();
+      showToast('Үзэсгэлэнт газар нэмэгдлээ ✓');
+    }
+
+    function addResort(){
+      const province = getProvinceKey();
+
+      const name = document.getElementById('resortName').value.trim();
+      const region = document.getElementById('resortRegion').value.trim();
+      const img = document.getElementById('resortImg').value.trim();
+      const rating = document.getElementById('resortRating').value.trim() || '⭐ 4.5';
+      const price = document.getElementById('resortPrice').value.trim();
+      const priceNum = Number(document.getElementById('resortPriceNum').value);
+      const phone = document.getElementById('resortPhone').value.trim();
+      const email = document.getElementById('resortEmail').value.trim();
+      const feats = document.getElementById('resortFeats').value
+        .split(',')
+        .map(f => f.trim())
+        .filter(Boolean);
+      const desc = document.getElementById('resortDesc').value.trim();
+
+      if(!name || !region || !img || !price || !priceNum){
+        showToast('Амралтын газрын мэдээллээ бүрэн оруулна уу');
+        return;
+      }
+
+      travelDB[province].resorts.push({
+        name,
+        region,
+        img,
+        rating,
+        price,
+        priceNum,
+        unit:'хүн/хоног',
+        phone,
+        email,
+        feats,
+        desc
+      });
+
+      saveDB();
+      clearResortForm();
+      renderAllLists();
+      showToast('Амралтын газар нэмэгдлээ ✓');
+    }
+
+    function deleteSpot(index){
+      const province = getProvinceKey();
+      travelDB[province].spots.splice(index, 1);
+      saveDB();
+      renderAllLists();
+      showToast('Үзэсгэлэнт газар устлаа');
+    }
+
+    function deleteResort(index){
+      const province = getProvinceKey();
+      travelDB[province].resorts.splice(index, 1);
+      saveDB();
+      renderAllLists();
+      showToast('Амралтын газар устлаа');
+    }
+
+    function clearSpotForm(){
+      document.getElementById('spotName').value = '';
+      document.getElementById('spotImg').value = '';
+      document.getElementById('spotDesc').value = '';
+      document.getElementById('spotTags').value = '';
+      document.getElementById('spotPreview').src = '';
+      document.getElementById('spotPreview').style.display = 'none';
+    }
+
+    function clearResortForm(){
+      document.getElementById('resortName').value = '';
+      document.getElementById('resortRegion').value = '';
+      document.getElementById('resortImg').value = '';
+      document.getElementById('resortRating').value = '';
+      document.getElementById('resortPrice').value = '';
+      document.getElementById('resortPriceNum').value = '';
+      document.getElementById('resortPhone').value = '';
+      document.getElementById('resortEmail').value = '';
+      document.getElementById('resortFeats').value = '';
+      document.getElementById('resortDesc').value = '';
+      document.getElementById('resortPreview').src = '';
+      document.getElementById('resortPreview').style.display = 'none';
+    }
+
+    function renderAllLists(){
+      const province = getProvinceKey();
+      renderSpotList(travelDB[province].spots);
+      renderResortList(travelDB[province].resorts);
+    }
+
+    function renderSpotList(spots){
+      const box = document.getElementById('spotList');
+
+      if(!spots.length){
+        box.innerHTML = '<p class="muted">Одоогоор үзэсгэлэнт газар байхгүй байна.</p>';
+        return;
+      }
+
+      box.innerHTML = spots.map((spot, index) => `
+        <div class="item">
+          <div class="item-top">
+            <div>
+              <strong>${spot.name}</strong>
+              <small>${spot.desc}</small>
+            </div>
+            <img class="mini-img" src="${spot.img}" alt="${spot.name}">
+          </div>
+
+          <div class="chips">
+            ${(spot.tags || []).map(tag => `<span class="chip">${tag}</span>`).join('')}
+          </div>
+
+          <div class="item-actions">
+            <button class="item-btn item-delete" onclick="deleteSpot(${index})">Устгах</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderResortList(resorts){
+      const box = document.getElementById('resortList');
+
+      if(!resorts.length){
+        box.innerHTML = '<p class="muted">Одоогоор амралтын газар байхгүй байна.</p>';
+        return;
+      }
+
+      box.innerHTML = resorts.map((resort, index) => `
+        <div class="item">
+          <div class="item-top">
+            <div>
+              <strong>${resort.name}</strong>
+              <small>${resort.region} · ${resort.price}</small>
+            </div>
+            <img class="mini-img" src="${resort.img}" alt="${resort.name}">
+          </div>
+
+          <div class="chips">
+            ${(resort.feats || []).map(f => `<span class="chip">${f}</span>`).join('')}
+          </div>
+
+          <div class="muted">${resort.desc || ''}</div>
+
+          <div class="item-actions">
+            <button class="item-btn item-delete" onclick="deleteResort(${index})">Устгах</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function resetDB(){
+      if(!confirm('Бүх admin өгөгдлийг reset хийх үү?')){
+        return;
+      }
+      localStorage.removeItem('jim_db');
+      travelDB = structuredClone(defaultDB);
+      renderAllLists();
+      showToast('Өгөгдөл reset хийгдлээ');
+    }
+
+    renderAllLists();
+  </script>
+</body>
+</html>
