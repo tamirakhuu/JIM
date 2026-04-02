@@ -1291,6 +1291,16 @@ function renderBks(){
   `).join('');
 }
 
+function cancelBooking(index){
+  if(!confirm('Захиалгыг цуцлах уу?')) return;
+
+  bookings.splice(index, 1);
+
+  localStorage.setItem('jim_bookings', JSON.stringify(bookings));
+
+  renderBks();
+}
+
 function confirmBk(){
   const ci = document.getElementById('bkIn').value;
   const co = document.getElementById('bkOut').value;
