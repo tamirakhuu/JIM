@@ -621,6 +621,73 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:56px 4
     right:16px;
     bottom:16px;
   }
+  /* Booking modal mobile fix */
+#bookingModal .modal-box,
+#bookingModal .fg,
+#bookingModal .fg input,
+#bookingModal .fg select,
+#bookingModal .fg textarea{
+  width: 100%;
+  max-width: 100%;
+}
+
+#bookingModal .fg input,
+#bookingModal .fg select,
+#bookingModal .fg textarea{
+  display: block;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+#bookingModal input[type="date"]{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 768px){
+  #bookingModal .modal-box{
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    padding: 22px 14px;
+    border-radius: 18px;
+  }
+
+  #bookingModal .m-title{
+    font-size: 18px;
+    margin: 8px 0 18px;
+  }
+
+  #bookingModal .fg{
+    margin-bottom: 12px;
+  }
+
+  #bookingModal .fg label{
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  #bookingModal .fg input,
+  #bookingModal .fg select,
+  #bookingModal .fg textarea{
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    font-size: 16px; /* iPhone zoom-оос сэргийлнэ */
+    border-radius: 12px;
+  }
+
+  #bookingModal .bk-btns{
+    flex-direction: column;
+  }
+
+  #bookingModal .btn-ghost,
+  #bookingModal .btn-sub{
+    width: 100%;
+  }
+}
 }
 </style>
 </head>
